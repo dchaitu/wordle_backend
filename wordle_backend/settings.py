@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-j$+a4o#h_*-b%a^1o8v+o=1oerg9*odin-u$lbad3yclfw&+f7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -120,18 +120,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:8000',
-    'http://localhost:46617'
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_NAME = "my_session"
+SESSION_COOKIE_AGE = 86400
+SESSION_SAVE_EVERY_REQUEST = True
