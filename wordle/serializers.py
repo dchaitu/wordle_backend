@@ -12,10 +12,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
 
 class GuessedWordSerializer(serializers.Serializer):
-    username = serializers.CharField()
     content = serializers.CharField()
 

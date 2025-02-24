@@ -7,7 +7,7 @@ class WordAdmin(admin.ModelAdmin):
     list_display = ["id", "content"]
 
 class GuessedWordAdmin(admin.ModelAdmin):
-    list_display = ["id", "content"]
+    list_display = ["id", "content", "user"]
 
 
 
