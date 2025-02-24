@@ -18,7 +18,7 @@ class MatchWordInteractor:
             if verifying_word[i] == guessed_word[i]:
                 color_cells[i] = "correctPosition"
                 verifying_word[i] = None
-            elif verifying_word[i] in correct_word:
+            elif guessed_word[i] in correct_word:
                 color_cells[i] = "present"
             else:
                 color_cells[i] = "notPresent"
