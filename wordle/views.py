@@ -43,6 +43,22 @@ class GetWordView(APIView):
 
 
 
+
+class CorrectWordView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    def get(self, request):
+        storage = StorageImplementation()
+        interactor = MatchWordInteractor(storage=storage)
+        correct_word = interactor.get_correct_word()
+        return JsonResponse({
+            "status": "success",
+            "answer": correct_word
+        })
+
+
+
+
 class GuessedWordView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]

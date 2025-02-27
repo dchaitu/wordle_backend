@@ -25,3 +25,7 @@ class MatchWordInteractor:
 
         return color_cells
 
+    def get_correct_word(self):
+        correct_word = self.storage.get_latest_word()
+        return correct_word
+
