@@ -22,4 +22,8 @@ class StorageInterface(abc.ABC):
     def store_guessed_word(self,username:str, guessed_word:str):
         pass
 
+    @abc.abstractmethod
+    def set_user_password(self, username: str, password: str):
+        pass
+
 

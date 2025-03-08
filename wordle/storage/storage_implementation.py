@@ -29,3 +29,8 @@ class StorageImplementation(StorageInterface):
         user = User.objects.get(username=username)
         return user
 
+    def set_user_password(self, username:str, password:str):
+        user = User.objects.get(username=username)
+        user.set_password(password)
+        user.save()
+        return user

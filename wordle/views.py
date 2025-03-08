@@ -1,17 +1,14 @@
 import json
 import random
 
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from wordle.interactor.match_word_interactor import MatchWordInteractor
-from wordle.models import Word, GuessedWord, CorrectWord
 from django.contrib.auth import authenticate
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -25,11 +22,12 @@ class GetWordView(APIView):
     authentication_classes = [JWTAuthentication]
     def get(self, request):
         user = request.user
-        words = Word.objects.all()
+        storage = StorageImplementation()
+        words = storage.get_all_words()
         print("user", user)
         if user.is_authenticated:
             word = random.choice(words)
-            CorrectWord.objects.create(word=word)
+            storage.store_correct_word(content=word.content)
             print(word)
 
             return JsonResponse({
@@ -48,8 +46,8 @@ class GuessedWordView(APIView):
     authentication_classes = [JWTAuthentication]
     def post(self, request):
         try:
-            data = json.loads(request.body.decode("utf-8"))  # ✅ Ensure JSON parsing
-            print(f"Request body: {data.get('content')}")  # ✅ Debugging
+            data = json.loads(request.body.decode("utf-8"))
+            print(f"Request body: {data.get('content')}")
             print("request data", data)
             print("guessed word data", data.get('content'))
             storage = StorageImplementation()
@@ -82,12 +80,12 @@ class SignupAPI(APIView):
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            user = User.objects.get(username=data['username'])
-            user.set_password(data['password'])
-            user.save()
-            token, _ = Token.objects.get_or_create(user=user)
+            storage = StorageImplementation()
+            user = storage.set_user_password(username=data['username'], password=data['password'])
+            refresh = RefreshToken.for_user(user)
             return Response({
-                "token": token.key,
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
                 "user": serializer.data
             })
 
